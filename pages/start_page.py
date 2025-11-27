@@ -1,0 +1,44 @@
+from playwright.sync_api import Page, expect
+
+
+class StartPage:
+    def __init__(self, page: Page):
+        self.page = page
+        self.search_field = page.locator('input[data-testid="search__input"]')
+        self.search_btn = page.locator('button[data-testid="search__button"]')
+        self.search_result_title = page.locator('a[data-testid="art__title"]')
+        self.search_result_author = page.locator('a[data-testid="art__authorName--link"]')
+        self.search_result_nothing_found = page.locator('h1[data-testid="search-title__wrapper"]')
+
+    def navigate(self):
+        self.page.goto('https://www.litres.ru/', wait_until='domcontentloaded')
+        self.page.wait_for_selector('input[data-testid="search__input"]', state='visible')
+
+
+    def search_by_author(self, book):
+        self.search_field.fill(book.author)
+        self.search_btn.click()
+        return self
+
+    def search_by_title(self, book):
+        self.search_field.fill(book.title)
+        self.search_btn.click()
+        return self
+
+    def book_with_specified_title_must_be_found (self, book):
+        first_title =self.search_result_title.first
+        expect(first_title).to_contain_text(book.title)
+        return self
+
+    def book_with_specified_author_must_be_found (self, book):
+        first_author = self.search_result_author.first
+        expect(first_author).to_contain_text(book.author)
+        return self
+
+    def nothing_found_change_request(self):
+        expect(self.search_result_nothing_found).to_contain_text("ничего не найдено")
+        return self
+
+
+def start_page():
+    return None
