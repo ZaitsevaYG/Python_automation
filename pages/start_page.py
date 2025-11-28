@@ -26,6 +26,7 @@ class StartPage:
         return self
 
     def book_with_specified_title_must_be_found (self, book):
+        self.page.wait_for_selector('a[data-testid="art__authorName--link"]', state='visible')
         first_title =self.search_result_title.first
         expect(first_title).to_contain_text(book.title)
         return self
