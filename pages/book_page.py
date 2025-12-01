@@ -1,10 +1,13 @@
 from playwright.sync_api import Page, expect
 import re
 from playwright.sync_api import Error
+from utils import close_promo_popup
+from data.books import Book
 
 class BookPage:
-    def __init__(self, page: Page):
+    def __init__(self, page: Page, book: Book):
         self.page = page
+        self.book = book
         self.text_book_btn = page.get_by_role("link", name="Текст")
         self.audio_book_btn = page.get_by_test_id("book-tabs-format__wrapper").get_by_role("link", name="Аудио")
         self.favorite_btn = page.get_by_test_id("book-sale-block__wrapper").get_by_role("button", name="Отложить")
@@ -13,10 +16,7 @@ class BookPage:
         self.add_to_cart_btn = page.get_by_test_id("book__addToCartButton")
         self.read_the_fragment_btn = page.get_by_test_id("book__fragmentReadListen--button")
         self.listen_to_the_fragment_btn =  page.get_by_test_id("book-tabs-format__wrapper").get_by_role("link", name="Аудио")
-        self.close_auth_popup_btn = page.get_by_test_id("authorization-popup__close-button")
-        self.close_popup_btn = page.get_by_test_id("modal__close--button")
         self.already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
-        self.authorization_popup = page.get_by_test_id("authorization-popup")
         self.paper_book_banner = page.get_by_text("Теперь и бумажные книги")
         self.buy_paper_book_btn = page.get_by_role("button", name=re.compile(r"Купить за"))
         self.details_paper_book_btn = page.get_by_role("button", name="Подробнее")
@@ -24,8 +24,8 @@ class BookPage:
         self.paper_book_title_details_popup = page.get_by_test_id("modalWindow--content").get_by_role("heading", name="Атомные привычки. Как приобрести хорошие привычки и избавиться от плохих")
 
     def navigate(self):
-        self.page.goto('https://www.litres.ru/book/dzheyms-klir/atomnye-privychki-kak-priobresti-horoshie-privychki-i-izbavit-48514275/', wait_until='domcontentloaded')
-        book_title = self.page.get_by_role("heading", name="Атомные привычки. Как приобрести хорошие привычки и избавиться от плохих")
+        self.page.goto(self.book.url, wait_until='domcontentloaded')
+        book_title = self.page.get_by_role("heading", name=self.book.title)
         book_title.wait_for(state="visible")
 
 
@@ -52,12 +52,7 @@ class BookPage:
 
     def add_to_cart(self):
         self.add_to_cart_btn.click()
-
-
-        if self.close_popup_btn.is_visible(timeout=3000):
-            self.close_popup_btn.click()
-            self.close_popup_btn.wait_for(state="hidden", timeout=5000)
-        return self
+        close_promo_popup(self.page)
 
     def is_in_favorites(self) -> bool:
         filled_icon = self.page.get_by_role("button", name="Отложить").get_by_test_id("icon_favoritesFilled")

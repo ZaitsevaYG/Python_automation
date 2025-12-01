@@ -3,6 +3,7 @@ import pytest
 from pages.cart_page import CartPage
 from pages.start_page import StartPage
 from pages.book_page import BookPage
+from data.books import ATOMIC_HABITS
 
 
 """
@@ -31,12 +32,13 @@ def start_page(page):
 
 @pytest.fixture
 def book_page(page):
-    bp = BookPage(page)
+    bp = BookPage(page,ATOMIC_HABITS)
     bp.navigate()
     return bp
 
+
 @pytest.fixture
 def cart_page(page):
-    cp = CartPage(page)
+    cp = CartPage(page, ATOMIC_HABITS)
     cp.navigate_and_add_to_cart()
     return cp
