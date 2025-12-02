@@ -15,7 +15,7 @@ class CartPage:
         self.delete_and_postpone_btn = page.get_by_role("button", name="Отложить и удалить")
         self.empty_heart_icon = page.get_by_role("button", name="Отложить").get_by_test_id("icon_favorites")
         self.filled_heart_icon = page.get_by_role("button", name="В отложенном").get_by_test_id("icon_favoritesFilled")
-        self.delete_from_cart_popup_btn = page.get_by_test_id("cart__modalDeleteArt").get_by_role("button", name="Удалить")
+        self.delete_from_cart_popup_btn = page.get_by_test_id("cart__modalDeleteArt--button-primary")
         self.checkout_btn = page.get_by_role("button", name="Перейти к покупке")
         self.checkout_total = page.get_by_test_id("cart__checkout--total")
         self.empty_cart_state = page.get_by_test_id("cart__emptyState--wrapper")
@@ -27,18 +27,25 @@ class CartPage:
             raise ValueError("Book ID is required to locate item in cart")
         return self.page.get_by_test_id(f"cart__listItem--{self.book.id}")
 
-
-    def navigate_and_add_to_cart(self):
+    def navigate_and_add_to_cart(self, max_retries=3):
         self.page.goto(self.book.url, wait_until='domcontentloaded')
         book_title = self.page.get_by_role("heading", name=self.book.title)
         book_title.wait_for(state="visible")
         self.add_to_cart_btn.click()
+        self.page.wait_for_timeout(1000)
+        for attempt in range(max_retries):
+            try:
+                self.page.locator('body').click(position={"x": 10, "y": 10}, force=True)
+                self.already_in_the_cart_btn.click()
+                return
+            except TimeoutError:
+                if attempt == max_retries - 1:
+                    raise
+                print(f"Attempt {attempt + 1} failed, retrying...")
+                self.page.wait_for_timeout(2000)
 
-        close_promo_popup(self.page)
-
-        self.already_in_the_cart_btn.is_visible(timeout=1000)
-        self.already_in_the_cart_btn.click()
-        self.page.wait_for_timeout(timeout=1000)
+        # self.already_in_the_cart_btn.click()
+        # self.page.wait_for_timeout(timeout=1000)
 
     def postpone_book(self):
         book_in_cart = self.get_book_locator()
@@ -48,6 +55,7 @@ class CartPage:
 
     def delete_from_cart_and_postpone (self):
         expect(self.empty_heart_icon).to_be_visible()
+        self.page.wait_for_timeout(1000)
         self.delete_btn.click()
         expect(self.delete_popup).to_be_visible()
         self.delete_and_postpone_btn.click()
@@ -56,6 +64,7 @@ class CartPage:
 
     def delete_from_cart (self):
         expect(self.empty_heart_icon).to_be_visible()
+        self.page.wait_for_timeout(1000)
         self.delete_btn.click()
         expect(self.delete_popup).to_be_visible()
         self.delete_from_cart_popup_btn.click()

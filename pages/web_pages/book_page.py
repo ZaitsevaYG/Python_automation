@@ -20,11 +20,12 @@ class BookPage:
         self.paper_book_banner = page.get_by_text("Теперь и бумажные книги")
         self.buy_paper_book_btn = page.get_by_role("button", name=re.compile(r"Купить за"))
         self.details_paper_book_btn = page.get_by_role("button", name="Подробнее")
-        self.buy_from_details_paper_book_btn = page.get_by_test_id("modalWindow--content").get_by_role("button", name="Купить")
-        self.paper_book_title_details_popup = page.get_by_test_id("modalWindow--content").get_by_role("heading", name="Атомные привычки. Как приобрести хорошие привычки и избавиться от плохих")
+        self.buy_from_details_paper_book_btn = page.get_by_test_id("button__content").get_by_role("button", name="Купить")
+        self.already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
+        #self.paper_book_title_details_popup = page.get_by_test_id("modalWindow--content").get_by_role("heading", name=self.book.title)
 
     def navigate(self):
-        self.page.goto(self.book.url, wait_until='domcontentloaded')
+        self.page.goto(self.book.url, wait_until='domcontentloaded', timeout=60000)
         book_title = self.page.get_by_role("heading", name=self.book.title)
         book_title.wait_for(state="visible")
 
@@ -78,7 +79,10 @@ class BookPage:
             self.make_favorite()
 
 
-
-
+    def paper_book_popup_title(self):
+        heading = self.page.get_by_test_id("modalWindow--content").locator("h2, h3").first
+        expect(heading).to_be_visible()
+        actual_text = heading.text_content()
+        assert self.book.title in actual_text, f"Expected 'Атомные привычки' in '{actual_text}'"
 
 

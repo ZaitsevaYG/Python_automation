@@ -8,10 +8,10 @@ class StartPage:
         self.search_btn = page.locator('button[data-testid="search__button"]')
         self.search_result_title = page.locator('a[data-testid="art__title"]')
         self.search_result_author = page.locator('a[data-testid="art__authorName--link"]')
-        self.search_result_nothing_found = page.locator('h1[data-testid="search-title__wrapper"]')
+        self.search_result_nothing_found = page.get_by_test_id('search-title__wrapper')
 
     def navigate(self):
-        self.page.goto('https://www.litres.ru/', wait_until='domcontentloaded')
+        self.page.goto('https://www.litres.ru/', wait_until='domcontentloaded', timeout=60000)
         self.page.wait_for_selector('input[data-testid="search__input"]', state='visible')
 
 
