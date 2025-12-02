@@ -1,7 +1,7 @@
 from playwright.sync_api import Page, expect
 from utils import close_promo_popup
 from data.books import Book
-
+from allure import step
 
 
 class CartPage:
@@ -22,38 +22,28 @@ class CartPage:
 
 
     def get_book_locator(self):
-
         if not self.book.id:
             raise ValueError("Book ID is required to locate item in cart")
         return self.page.get_by_test_id(f"cart__listItem--{self.book.id}")
 
-    def navigate_and_add_to_cart(self, max_retries=3):
+    @step("Открывается страница книги, книга добавляется в корзину")
+    def navigate_and_add_to_cart(self):
         self.page.goto(self.book.url, wait_until='domcontentloaded')
         book_title = self.page.get_by_role("heading", name=self.book.title)
         book_title.wait_for(state="visible")
         self.add_to_cart_btn.click()
         self.page.wait_for_timeout(1000)
-        # for attempt in range(max_retries):
-        #     try:
-        #         self.page.locator('body').click(position={"x": 10, "y": 10}, force=True)
-        #         self.already_in_the_cart_btn.click()
-        #         return
-        #     except TimeoutError:
-        #         if attempt == max_retries - 1:
-        #             raise
-        #         print(f"Attempt {attempt + 1} failed, retrying...")
-        #         self.page.wait_for_timeout(2000)
         close_promo_popup(self.page)
         self.already_in_the_cart_btn.click()
 
 
-
+    @step("Добавление книги в отложенное")
     def postpone_book(self):
         book_in_cart = self.get_book_locator()
         book_in_cart.get_by_role("button", name="Отложить").click()
         return self
 
-
+    @step("Книга не в отложенном. Удаление книги -> в поп апе нажимается 'Удалить и отложить'")
     def delete_from_cart_and_postpone (self):
         expect(self.empty_heart_icon).to_be_visible()
         self.page.wait_for_timeout(1000)
@@ -62,7 +52,7 @@ class CartPage:
         self.delete_and_postpone_btn.click()
         return self
 
-
+    @step("Книга не в отложенном. Удаление книги без добавления в отложенное")
     def delete_from_cart (self):
         expect(self.empty_heart_icon).to_be_visible()
         self.page.wait_for_timeout(1000)
@@ -71,6 +61,7 @@ class CartPage:
         self.delete_from_cart_popup_btn.click()
         return self
 
+    @step("Покупка книги")
     def buy_book(self):
         expect(self.checkout_total).not_to_be_empty()
         self.checkout_btn.click()

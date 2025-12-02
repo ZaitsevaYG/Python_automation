@@ -32,7 +32,8 @@ def start_page(browser):
     page = context.new_page()
     sp = StartPage(page)
     sp.navigate()
-    return sp
+    yield sp
+    context.close()
 
 
 @pytest.fixture
@@ -41,7 +42,8 @@ def book_page(browser):
     page = context.new_page()
     bp = BookPage(page,ATOMIC_HABITS)
     bp.navigate()
-    return bp
+    yield bp
+    context.close()
 
 
 
