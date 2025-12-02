@@ -1,36 +1,34 @@
-from playwright.sync_api import Page, Error, expect
 
+from playwright.sync_api import Page, TimeoutError, expect
+
+from playwright.sync_api import Page, TimeoutError # Убедитесь, что TimeoutError импортирован правильно
 
 def close_promo_popup(page: Page, timeout=5000):
-    # Ищем попап где угодно на странице, но только видимый
     modal = page.locator('[data-testid="modal--wrapper"][aria-hidden="false"]')
     close_button = page.locator('[data-testid="modal__close--button"]')
+    already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
 
-    print(f"Looking for any visible popup...")
-    print(f"Visible modal count: {modal.count()}")
+    if close_button.is_visible():
+        close_button.click()
+        modal.wait_for(state="hidden", timeout=timeout)
+    else:
 
-    try:
-        modal.wait_for(state="attached", timeout=timeout)
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                page.locator('body').click(position={"x": 10, "y": 10}, force=True)
+                already_in_the_cart_btn.click()
+                return
+            except TimeoutError:
+                if attempt == max_retries - 1:
+                    raise
+                print(f"Attempt {attempt + 1} failed, retrying...")
+                page.wait_for_timeout(2000)
 
-        # Проверяем, видим ли он
-        if modal.is_visible():
-            print("Visible popup found, attempting to close...")
 
-            # Кликаем по кнопке закрытия
-            close_button.wait_for(state="visible", timeout=timeout)
-            close_button.click()
 
-            # Ждем, пока попап исчезнет
-            modal.wait_for(state="hidden", timeout=timeout)
-            print("Popup closed successfully")
-        else:
-            print("Popup is not visible")
 
-    except Exception as e:
-        print(f"Popup not found or already closed: {str(e)}")
-        pass
-
-def close_authorization_popup (page: Page, timeout=5000):
+def close_authorization_popup (page: Page):
     authorization_popup = page.get_by_test_id("authorization-popup")
     close_auth_popup_btn = page.get_by_test_id("authorization-popup__close-button")
     expect(authorization_popup).to_be_visible()

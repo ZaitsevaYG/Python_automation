@@ -47,12 +47,3 @@ def test_buy_paper_book(book_page):
     close_authorization_popup(book_page.page)
     assert not book_page.is_in_cart()
 
-# def test_details_paper_book(book_page):
-#     book_page.details_paper_book_btn.click()
-#     book_page.page.wait_for_timeout(1000)
-#     book_page.paper_book_popup_title()
-#     expect(book_page.buy_from_details_paper_book_btn).to_be_visible()
-#     book_page.buy_from_details_paper_book_btn.click()
-#     book_page.page.wait_for_timeout(1000)
-#     close_authorization_popup(book_page.page)
-#     assert not book_page.is_in_cart()

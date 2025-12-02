@@ -33,19 +33,20 @@ class CartPage:
         book_title.wait_for(state="visible")
         self.add_to_cart_btn.click()
         self.page.wait_for_timeout(1000)
-        for attempt in range(max_retries):
-            try:
-                self.page.locator('body').click(position={"x": 10, "y": 10}, force=True)
-                self.already_in_the_cart_btn.click()
-                return
-            except TimeoutError:
-                if attempt == max_retries - 1:
-                    raise
-                print(f"Attempt {attempt + 1} failed, retrying...")
-                self.page.wait_for_timeout(2000)
+        # for attempt in range(max_retries):
+        #     try:
+        #         self.page.locator('body').click(position={"x": 10, "y": 10}, force=True)
+        #         self.already_in_the_cart_btn.click()
+        #         return
+        #     except TimeoutError:
+        #         if attempt == max_retries - 1:
+        #             raise
+        #         print(f"Attempt {attempt + 1} failed, retrying...")
+        #         self.page.wait_for_timeout(2000)
+        close_promo_popup(self.page)
+        self.already_in_the_cart_btn.click()
 
-        # self.already_in_the_cart_btn.click()
-        # self.page.wait_for_timeout(timeout=1000)
+
 
     def postpone_book(self):
         book_in_cart = self.get_book_locator()

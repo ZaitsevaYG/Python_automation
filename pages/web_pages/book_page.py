@@ -22,7 +22,7 @@ class BookPage:
         self.details_paper_book_btn = page.get_by_role("button", name="Подробнее")
         self.buy_from_details_paper_book_btn = page.get_by_test_id("button__content").get_by_role("button", name="Купить")
         self.already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
-        #self.paper_book_title_details_popup = page.get_by_test_id("modalWindow--content").get_by_role("heading", name=self.book.title)
+
 
     def navigate(self):
         self.page.goto(self.book.url, wait_until='domcontentloaded', timeout=60000)
@@ -77,12 +77,5 @@ class BookPage:
     def ensure_in_favorites(self):
         if not self.is_in_favorites():
             self.make_favorite()
-
-
-    def paper_book_popup_title(self):
-        heading = self.page.get_by_test_id("modalWindow--content").locator("h2, h3").first
-        expect(heading).to_be_visible()
-        actual_text = heading.text_content()
-        assert self.book.title in actual_text, f"Expected 'Атомные привычки' in '{actual_text}'"
 
 
