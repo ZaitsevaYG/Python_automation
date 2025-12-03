@@ -1,6 +1,7 @@
 
+
 from playwright.sync_api import expect
-from utils import close_authorization_popup
+from utils import close_authorization_popup, close_promo_popup, allure_screenshot
 import allure
 
 @allure.epic('Проверка элементов на странице книги')
@@ -13,6 +14,7 @@ import allure
 def test_choosing_text_version(book_page):
     book_page.choose_text_version()
     expect(book_page.read_the_fragment_btn).to_be_visible()
+    allure_screenshot(book_page.page)
 
 
 @allure.epic('Проверка элементов на странице книги')
@@ -25,6 +27,7 @@ def test_choosing_text_version(book_page):
 def test_choosing_audio_version(book_page):
     book_page.choose_audio_version()
     expect(book_page.listen_to_the_fragment_btn).to_be_visible()
+    allure_screenshot(book_page.page)
 
 @allure.epic('Проверка элементов на странице книги')
 @allure.label("owner", "Yana Zaitseva")
@@ -35,8 +38,10 @@ def test_choosing_audio_version(book_page):
 @allure.label('layer', 'web')
 def test_add_to_favorites (book_page):
     assert not book_page.is_in_favorites()
+    allure_screenshot(book_page.page)
     book_page.make_favorite()
     assert book_page.is_in_favorites()
+    allure_screenshot(book_page.page)
 
 @allure.epic('Проверка элементов на странице книги')
 @allure.label("owner", "Yana Zaitseva")
@@ -47,9 +52,11 @@ def test_add_to_favorites (book_page):
 @allure.label('layer', 'web')
 def test_remove_from_favorites (book_page):
     book_page.ensure_in_favorites()
+    allure_screenshot(book_page.page)
     assert book_page.is_in_favorites()
     book_page.make_favorite()
     assert not book_page.is_in_favorites()
+    allure_screenshot(book_page.page)
 
 @allure.epic('Проверка элементов на странице книги')
 @allure.label("owner", "Yana Zaitseva")
@@ -61,9 +68,11 @@ def test_remove_from_favorites (book_page):
 def test_add_to_cart (book_page):
     book_page.add_to_cart()
     book_page.page.wait_for_timeout(1000)
+    close_promo_popup(book_page.page)
     assert book_page.is_in_cart()
     expect(book_page.already_in_the_cart_btn).to_be_visible()
     expect(book_page.already_in_the_cart_btn).to_have_text("В корзинеПерейти")
+
 
 @allure.epic('Проверка элементов на странице книги')
 @allure.label("owner", "Yana Zaitseva")

@@ -1,5 +1,7 @@
+import allure
 from playwright.sync_api import Page, expect
-from allure import step
+
+from utils import allure_screenshot
 
 
 class StartPage:
@@ -11,39 +13,58 @@ class StartPage:
         self.search_result_author = page.locator('a[data-testid="art__authorName--link"]')
         self.search_result_nothing_found = page.get_by_test_id('search-title__wrapper')
 
-    @step("Открывается стартовая страница")
+    @allure.step("Открывается стартовая страница")
     def navigate(self):
         self.page.goto('https://www.litres.ru/', wait_until='domcontentloaded', timeout=60000)
         self.page.wait_for_selector('input[data-testid="search__input"]', state='visible')
 
-    @step("Поиск по автору")
+    @allure.step("Вводится имя автора в строку поиска и нажать кнопку поиска")
     def search_by_author(self, book):
         self.search_field.fill(book.author)
         self.search_btn.click()
+
         return self
 
-    @step("Поиск по названию книги")
+    @allure.step("Вводится название книги в строку поиска и нажать кнопку поиска")
     def search_by_title(self, book):
         self.search_field.fill(book.title)
         self.search_btn.click()
         return self
 
-    @step("Проверка того, что по названию найдена верная книга")
+    @allure.step("Проверка, что первая найденная книга соответствует критериям поиска")
     def book_with_specified_title_must_be_found (self, book):
-        self.page.wait_for_selector('a[data-testid="art__authorName--link"]', state='visible')
-        first_title =self.search_result_title.first
-        expect(first_title).to_contain_text(book.title)
+        try:
+            self.page.wait_for_selector('a[data-testid="art__title"]', state='visible')
+            first_title =self.search_result_title.first
+
+            expect(first_title).to_contain_text(book.title)
+
+        except Exception as e:
+            allure_screenshot(self.page)
+            raise e
         return self
 
-    @step("Проверка того, что по автору найдена верная книга")
+    @allure.step("Проверка, что первая найденная книга соответствует критериям поиска")
     def book_with_specified_author_must_be_found (self, book):
-        first_author = self.search_result_author.first
-        expect(first_author).to_contain_text(book.author)
+        try:
+            self.page.wait_for_selector('a[data-testid="art__authorName--link"]', state='visible')
+            first_author = self.search_result_author.first
+            expect(first_author).to_contain_text(book.author)
+
+        except Exception as e:
+            allure_screenshot(self.page)
+            raise e
         return self
 
-    @step("Проверка того, что по несуществующему названию появляется текст об отсутствии результатов поиска")
+    @allure.step("Проверка того, что по несуществующему названию появляется текст об отсутствии результатов поиска")
     def nothing_found_bad_request(self):
-        expect(self.search_result_nothing_found).to_contain_text("ничего не найдено")
+        try:
+            allure_screenshot(self.page)
+            expect(self.search_result_nothing_found).to_contain_text("ничего не найдено")
+        except Exception as e:
+            allure_screenshot(self.page)
+            raise e
+
         return self
 
 
