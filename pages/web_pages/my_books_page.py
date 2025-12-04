@@ -30,6 +30,8 @@ class MyBooksPage:
         self.i_follow_fill_the_lists = page.get_by_role("button", name="Наполнить список")
         self.upload_books_btn = page.get_by_role("button", name="Загрузить книги")
         self.recommended = page.get_by_test_id("breadcrumbs__wrapper").get_by_text("Рекомендации для вас")
+        self.recomended_url = f'{main_link}recommend/'
+
 
     @allure.step("Открывается страница 'Мои книги'. Пользователь не авторизован")
     def navigate(self):
