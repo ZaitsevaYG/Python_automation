@@ -25,9 +25,10 @@ class BookPage:
         self.buy_from_details_paper_book_btn = page.get_by_test_id("button__content").get_by_role("button", name="Купить")
         self.already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
 
-    @allure.step("Открывается страница книги")
+    @allure.step("Открывается страница книги. Пользователь не авторизован")
     def navigate(self):
         self.page.goto(self.book.url, wait_until='domcontentloaded', timeout=60000)
+        expect(self.page.get_by_test_id("tab-login").get_by_role("paragraph")).to_contain_text("Войти")
         book_title = self.page.get_by_role("heading", name=self.book.title)
         book_title.wait_for(state="visible")
         allure_screenshot(self.page)

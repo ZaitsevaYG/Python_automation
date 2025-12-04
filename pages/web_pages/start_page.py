@@ -1,6 +1,7 @@
 import allure
 from playwright.sync_api import Page, expect
 
+from data.books import main_link
 from utils import allure_screenshot
 
 
@@ -13,9 +14,10 @@ class StartPage:
         self.search_result_author = page.locator('a[data-testid="art__authorName--link"]')
         self.search_result_nothing_found = page.get_by_test_id('search-title__wrapper')
 
-    @allure.step("Открывается стартовая страница")
+    @allure.step("Открывается стартовая страница. Пользователь не авторизован")
     def navigate(self):
-        self.page.goto('https://www.litres.ru/', wait_until='domcontentloaded', timeout=60000)
+        self.page.goto(main_link, wait_until='domcontentloaded', timeout=60000)
+        expect(self.page.get_by_test_id("tab-login").get_by_role("paragraph")).to_contain_text("Войти")
         self.page.wait_for_selector('input[data-testid="search__input"]', state='visible')
 
     @allure.step("Вводится имя автора в строку поиска и нажать кнопку поиска")

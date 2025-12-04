@@ -29,9 +29,10 @@ class CartPage:
             raise ValueError("Book ID is required to locate item in cart")
         return self.page.get_by_test_id(f"cart__listItem--{self.book.id}")
 
-    @allure.step("Открывается страница книги, книга добавляется в корзину. Осуществляется переход на станицу корзины")
+    @allure.step("Открывается страница книги. Пользователь не авторизован. Книга добавляется в корзину. Осуществляется переход на станицу корзины")
     def navigate_and_add_to_cart(self):
         self.page.goto(self.book.url, wait_until='domcontentloaded')
+        expect(self.page.get_by_test_id("tab-login").get_by_role("paragraph")).to_contain_text("Войти")
         book_title = self.page.get_by_role("heading", name=self.book.title)
         book_title.wait_for(state="visible")
         self.add_to_cart_btn.click()

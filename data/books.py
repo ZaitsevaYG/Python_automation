@@ -1,6 +1,7 @@
 import dataclasses
 from typing import Optional
 
+main_link = 'https://www.litres.ru/'
 
 @dataclasses.dataclass
 class Book:
@@ -13,7 +14,7 @@ class Book:
 
     def __post_init__(self):
         if not self.url and self.id and self.slug:
-            self.url = f"https://www.litres.ru/book/{self.slug}-{self.id}/"
+            self.url = f"{main_link}book/{self.slug}-{self.id}/"
 
 
 ATOMIC_HABITS = Book(

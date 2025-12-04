@@ -1,5 +1,3 @@
-
-
 from playwright.sync_api import expect
 from utils import close_authorization_popup, close_promo_popup, allure_screenshot
 import allure

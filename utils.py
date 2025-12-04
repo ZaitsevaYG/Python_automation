@@ -4,7 +4,7 @@ from playwright.sync_api import Page, TimeoutError, expect
 def close_promo_popup(page: Page, timeout=5000):
     modal = page.locator('[data-testid="modal--wrapper"][aria-hidden="false"]')
     close_button = page.locator('[data-testid="modal__close--button"]')
-    already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
+
 
     if close_button.is_visible():
         close_button.click()
