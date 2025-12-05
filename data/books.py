@@ -26,3 +26,11 @@ ATOMIC_HABITS = Book(
     slug="dzheyms-klir/atomnye-privychki-kak-priobresti-horoshie-privychki-i-izbavit"
 )
 
+FLOWERS = Book(
+    title="Цветы для Элджернона",
+    author="Дэниел Киз",
+    price='',
+    url='',
+    id="145410",
+    slug="deniel-kiz/cvety-dlya-eldzhernona"
+)
