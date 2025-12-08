@@ -1,4 +1,4 @@
 pytest~=8.4.2
-playwright>=1.45.0
+playwright
 allure-pytest
 allure-python-commons~=2.15.2
