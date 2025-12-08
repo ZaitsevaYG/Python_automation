@@ -28,7 +28,6 @@ def test_my_books_tab(mybooks_page):
 
     mybooks_page.my_books_tab()
     mybooks_page.my_choose_books.click()
-    #mybooks_page.page.wait_for_url(mybooks_page.recommended_url)
     mybooks_page.page.wait_for_timeout(3000)
     expect(mybooks_page.recommended).to_be_visible()
 
@@ -43,7 +42,6 @@ def test_postponed_books_tab(mybooks_page):
 
     mybooks_page.postponed_books_tab()
     mybooks_page.my_choose_books.click()
-    #mybooks_page.page.wait_for_url(mybooks_page.recommended_url)
     mybooks_page.page.wait_for_timeout(3000)
     expect(mybooks_page.recommended).to_be_visible()
 
@@ -86,7 +84,6 @@ def test_i_follow_tab_my_person(mybooks_page):
     allure_screenshot(mybooks_page.page)
     mybooks_page.i_follow_search.click()
     mybooks_page.page.wait_for_timeout(3000)
-    #mybooks_page.page.wait_for_url(mybooks_page.recommended_url)
     expect(mybooks_page.recommended).to_be_visible()
 
 @allure.epic('Проверка элементов на странице Мои книги')
@@ -102,7 +99,6 @@ def test_i_follow_tab_fill_the_list(mybooks_page):
     allure_screenshot(mybooks_page.page)
     mybooks_page.i_follow_fill_the_lists.click()
     mybooks_page.page.wait_for_timeout(3000)
-    #mybooks_page.page.wait_for_url(mybooks_page.recommended_url)
     expect(mybooks_page.recommended).to_be_visible()
 
 @allure.epic('Проверка элементов на странице Мои книги')
