@@ -1,8 +1,8 @@
-<h1> Проект по автоматищированному тестированию сервиса электронных и аудиокниг "Литрес"</h1>
+<h1> Проект по тестированию сервиса электронных и аудиокниг "Литрес"</h1>
 
 > <a target="_blank" href="https://www.litres.ru">Ссылка на сайт</a>
 
-![This is an image](design/image/litres_page.png)
+![This is an image](data/rm_design/litres_page.png)
 
 <h3> Список проверок, реализованных в автотестах:</h3>
 
@@ -20,6 +20,7 @@
 
 - [x] Поиск книги
 - [x] Добавление книги в корзину
+- [x] Попытка авторизации незарегистрированным пользователем
 
 ### Mobile-тесты
 - [x] Поиск книги(успешный и неуспешный)
@@ -28,7 +29,7 @@
 
 ----
 ### Проект реализован с использованием:
-<img src="design/icons/python-original.svg" width="50"> <img src="design/icons/pytest.png" width="50"> <img src="design/icons/intellij_pycharm.png" width="50"> <img src="design/icons/selene.png" width="50"> <img src="design/icons/selenoid.png" width="50"> <img src="design/icons/jenkins.png" width="50"> <img src="design/icons/allure_report.png" width="50"> <img src="design/icons/allure_testops.png" width="50"> <img src="design/icons/tg.png" width="50"> <img src="design/icons/jira.png" width="50">
+<img src="data/rm_design/icons/python-original.svg" width="50"> <img src="data/rm_design/icons/pytest.png" width="50"> <img src="data/rm_design/icons/intellij_pycharm.png" width="50"> <img src="data/rm_design/icons/selene.png" width="50"> <img src="data/rm_design/icons/selenoid.png" width="50"> <img src="data/rm_design/icons/jenkins.png" width="50"> <img src="data/rm_design/icons/allure_report.png" width="50"> <img src="data/rm_design/icons/allure_testops.png" width="50"> <img src="data/rm_design/icons/tg.png" width="50"> <img src="data/rm_design/icons/jira.png" width="50">
 
 ----
 ### Локальный запуск
