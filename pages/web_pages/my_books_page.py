@@ -1,7 +1,7 @@
 import allure
 from playwright.sync_api import Page, expect
-from utils import allure_screenshot
-from data.books import Book, main_link, ATOMIC_HABITS
+from utils.utils import allure_screenshot
+from data.books import Book, main_link
 
 
 class MyBooksPage:

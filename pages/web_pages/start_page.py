@@ -2,7 +2,7 @@ import allure
 from playwright.sync_api import Page, expect
 
 from data.books import main_link
-from utils import allure_screenshot
+from utils.utils import allure_screenshot
 
 
 class StartPage:

@@ -1,6 +1,5 @@
 from playwright.sync_api import expect
-import re
-from utils import close_authorization_popup
+from utils.utils import close_authorization_popup
 import allure
 
 @allure.epic('Взаимодействие с книгой на странице Корзины')

@@ -2,7 +2,7 @@ import allure
 from playwright.sync_api import Page, expect
 import re
 from playwright.sync_api import Error
-from utils import close_promo_popup, allure_screenshot
+from utils.utils import close_promo_popup, allure_screenshot
 from data.books import Book
 
 
