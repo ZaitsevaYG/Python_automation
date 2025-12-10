@@ -1,7 +1,10 @@
+import logging
+
 import allure
 from allure_commons.types import AttachmentType
 from playwright.sync_api import Page, TimeoutError, expect
 
+@allure.step("Закрыть поп-ап с промо '3+1'")
 def close_promo_popup(page: Page, timeout=5000):
     modal = page.locator('[data-testid="modal--wrapper"][aria-hidden="false"]')
     close_button = page.locator('[data-testid="modal__close--button"]')
@@ -24,18 +27,33 @@ def close_promo_popup(page: Page, timeout=5000):
                 page.wait_for_timeout(2000)
 
 
-
+@allure.step("Закрыть авторизационный поп-ап")
 def close_authorization_popup (page: Page):
     authorization_popup = page.get_by_test_id("authorization-popup")
     close_auth_popup_btn = page.get_by_test_id("authorization-popup__close-button")
     expect(authorization_popup).to_be_visible()
     close_auth_popup_btn.click()
 
+
+@allure.step("Сделать скриншот")
 def allure_screenshot(page: Page):
-    allure.attach(
-        page.screenshot(timeout=7000),
-        attachment_type=allure.attachment_type.PNG
-    )
+    try:
+
+        screenshot = page.screenshot(timeout=7000, type='jpeg')
+        allure.attach(
+            screenshot,
+            name="Скриншот страницы",
+            attachment_type=allure.attachment_type.JPG
+        )
+    except Exception as e:
+        logging.warning(f"Не удалось сделать скриншот: {e}")
+
+        allure.attach(
+            f"Ошибка при создании скришота: {e}".encode(),
+            name="Ошибка скриншота",
+            attachment_type=allure.attachment_type.TEXT
+        )
+
 
 def allure_add_logs(browser):
     log = "".join(f'{text}\n' for text in browser.driver.get_log(log_type='browser'))
