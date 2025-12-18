@@ -22,6 +22,7 @@ class StartPage:
 
     @allure.step("Вводится имя автора в строку поиска и нажать кнопку поиска")
     def search_by_author(self, book):
+        self.search_field.click()
         self.search_field.fill(book.author)
         self.search_btn.click()
 
@@ -29,6 +30,7 @@ class StartPage:
 
     @allure.step("Вводится название книги в строку поиска и нажать кнопку поиска")
     def search_by_title(self, book):
+        self.search_field.click()
         self.search_field.fill(book.title)
         self.search_btn.click()
         return self
