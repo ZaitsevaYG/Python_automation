@@ -31,6 +31,7 @@ def close_promo_popup(page: Page, timeout=5000):
 def close_authorization_popup (page: Page):
     authorization_popup = page.get_by_test_id("authorization-popup")
     close_auth_popup_btn = page.get_by_test_id("authorization-popup__close-button")
+    page.wait_for_timeout(2000)
     expect(authorization_popup).to_be_visible()
     close_auth_popup_btn.click()
 

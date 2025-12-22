@@ -12,6 +12,8 @@ class BookPage:
         self.book = book
         self.text_book_btn = page.get_by_role("link", name="Текст")
         self.audio_book_btn = page.get_by_test_id("book-tabs-format__wrapper").get_by_role("link", name="Аудио")
+        self.paper_book_btn = page.get_by_role("link", name="Бумага")
+        self.paper_book_buy_btn = page.get_by_test_id("book-sale-block__wrapper").get_by_test_id("button__content")
         self.favorite_btn = page.get_by_test_id("book-sale-block__wrapper").get_by_role("button", name="Отложить")
         self.with_subscription_btn = page.get_by_role("button", name="Читать по подписке")
         self.buy_download_btn = page.get_by_role("button", name="Купить и скачать")
@@ -24,6 +26,7 @@ class BookPage:
         self.details_paper_book_btn = page.get_by_role("button", name="Подробнее")
         self.buy_from_details_paper_book_btn = page.get_by_test_id("button__content").get_by_role("button", name="Купить")
         self.already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
+        self.choose_tarif_text = page.get_by_role("heading", name="Выберите тариф")
 
     @allure.step("Открывается страница книги. Пользователь не авторизован")
     def navigate(self):
@@ -41,6 +44,11 @@ class BookPage:
     @allure.step("Нажать на кнопку аудио версии книги")
     def choose_audio_version(self):
         self.audio_book_btn.click(timeout=1000)
+        return self
+
+    @allure.step("Нажать на кнопку бумажной версии книги версии книги")
+    def choose_paper_version(self):
+        self.paper_book_btn.click(timeout=1000)
         return self
 
     @allure.step("Добавить книгу в избранное")
