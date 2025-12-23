@@ -5,7 +5,7 @@ import pytest
 from pages.web_pages.cart_page import CartPage
 from pages.web_pages.my_books_page import MyBooksPage
 from pages.web_pages.start_page import StartPage
-from pages.web_pages.book_page import BookPage
+from pages.web_pages.book_description_page import BookPage
 from data.books import ATOMIC_HABITS, FLOWERS
 
 

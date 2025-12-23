@@ -1,7 +1,7 @@
 from playwright.sync_api import expect
 
 from data.books import FLOWERS
-from pages.web_pages.book_page import BookPage
+from pages.web_pages.book_description_page import BookPage
 from pages.web_pages.my_books_page import MyBooksPage
 from utils.utils import close_authorization_popup, allure_screenshot
 import allure
@@ -119,7 +119,7 @@ def test_archive_button(mybooks_page):
 def test_postponed_without_auth_page_my_books(page):
     book_page = BookPage(page,FLOWERS)
     book_page.navigate()
-    book_page.make_favorite()
+    book_page.toggle_favorite()
     mybooks_page = MyBooksPage(page,FLOWERS)
     mybooks_page.navigate()
 

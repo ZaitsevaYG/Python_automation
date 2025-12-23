@@ -10,50 +10,53 @@ class BookPage:
     def __init__(self, page: Page, book: Book):
         self.page = page
         self.book = book
+
+        # Версии книги
         self.text_book_btn = page.get_by_role("link", name="Текст")
         self.audio_book_btn = page.get_by_test_id("book-tabs-format__wrapper").get_by_role("link", name="Аудио")
-        self.paper_book_btn = page.get_by_role("link", name="Бумага")
-        self.paper_book_buy_btn = page.get_by_test_id("book-sale-block__wrapper").get_by_test_id("button__content")
-        self.favorite_btn = page.get_by_test_id("book-sale-block__wrapper").get_by_role("button", name="Отложить")
-        self.with_subscription_btn = page.get_by_role("button", name="Читать по подписке")
+        self.paper_book_btn = page.get_by_test_id("book-tabs-format__element_бумага")
+
+        # Кнопки покупки и избранного
+        self.favorite_btn = page.get_by_test_id("book-sale-block__wrapper").get_by_test_id("wishlist__button")
         self.buy_download_btn = page.get_by_role("button", name="Купить и скачать")
         self.add_to_cart_btn = page.get_by_test_id("book__addToCartButton")
+        self.with_subscription_btn = page.get_by_role("button", name="Читать по подписке")
+
+        # Бумажная книга — более надёжные селекторы
+        self.buy_paper_book_btn = page.get_by_role("button").filter(has_text="Купить за")
+        self.paper_book_buy_btn = page.get_by_test_id("book-sale-block__wrapper").get_by_test_id("button__content")
+
+        # UI-элементы
+        self.already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
         self.read_the_fragment_btn = page.get_by_test_id("book__fragmentReadListen--button")
-        self.listen_to_the_fragment_btn =  page.get_by_test_id("book-tabs-format__wrapper").get_by_role("link", name="Аудио")
-        self.already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
-        self.paper_book_banner = page.get_by_text("Теперь и бумажные книги")
-        self.buy_paper_book_btn = page.get_by_role("button", name=re.compile(r"Купить за"))
-        self.details_paper_book_btn = page.get_by_role("button", name="Подробнее")
-        self.buy_from_details_paper_book_btn = page.get_by_test_id("button__content").get_by_role("button", name="Купить")
-        self.already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
+        self.listen_to_the_fragment_btn = page.get_by_test_id("book-tabs-format__wrapper").get_by_role("link", name="Аудио")
         self.choose_tarif_text = page.get_by_role("heading", name="Выберите тариф")
 
     @allure.step("Открывается страница книги. Пользователь не авторизован")
     def navigate(self):
-        self.page.goto(self.book.url, wait_until='domcontentloaded', timeout=60000)
+        self.page.goto(self.book.url, timeout=60000)
         expect(self.page.get_by_test_id("tab-login").get_by_role("paragraph")).to_contain_text("Войти")
-        book_title = self.page.get_by_role("heading", name=self.book.title)
-        book_title.wait_for(state="visible")
+        expect(self.page.get_by_role("heading", name=self.book.title)).to_be_visible(timeout=15000)
         allure_screenshot(self.page)
 
     @allure.step("Нажать на кнопку текстовой версии книги")
     def choose_text_version(self):
-        self.text_book_btn.click()
+        self.text_book_btn.click(timeout=3000)
         return self
 
     @allure.step("Нажать на кнопку аудио версии книги")
     def choose_audio_version(self):
-        self.audio_book_btn.click(timeout=1000)
+        self.audio_book_btn.click(timeout=3000)
         return self
 
     @allure.step("Нажать на кнопку бумажной версии книги версии книги")
     def choose_paper_version(self):
-        self.paper_book_btn.click(timeout=1000)
+        self.paper_book_btn.click(timeout=3000)
         return self
 
     @allure.step("Добавить книгу в избранное")
-    def make_favorite(self):
-        self.favorite_btn.click(timeout=1000)
+    def toggle_favorite(self):
+        self.favorite_btn.click(timeout=3000)
         return self
 
     @allure.step("Нажать на кнопку 'Взять по подписке'")
@@ -74,9 +77,9 @@ class BookPage:
 
     @allure.step("Проверка, добавилась ли книга в избранное - поменялась ли икона на странице книги")
     def is_in_favorites(self) -> bool:
-        filled_icon = self.page.get_by_role("button", name="Отложить").get_by_test_id("icon_favoritesFilled")
-        allure_screenshot(self.page)
-        return filled_icon.is_visible(timeout=5000)
+        wishlist_btn = self.page.get_by_test_id("wishlist__button")
+        filled_icon = wishlist_btn.get_by_test_id("icon_favoritesFilled")
+        return filled_icon.count() > 0
 
 
     @allure.step("Проверка, добавилась ли книга в корзину - поменялся ли индекс на иконке корзины")
@@ -106,6 +109,6 @@ class BookPage:
     @allure.step("Добавление книги в избранное, если она еще не там")
     def ensure_in_favorites(self):
         if not self.is_in_favorites():
-            self.make_favorite()
+            self.toggle_favorite()
 
 

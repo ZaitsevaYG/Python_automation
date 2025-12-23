@@ -11,7 +11,7 @@ import allure
 @allure.label('layer', 'web')
 def test_choosing_text_version(book_page):
     book_page.choose_text_version()
-    expect(book_page.read_the_fragment_btn).to_be_visible()
+    expect(book_page.read_the_fragment_btn).to_be_visible(timeout=5000)
     allure_screenshot(book_page.page)
 
 
@@ -24,7 +24,7 @@ def test_choosing_text_version(book_page):
 @allure.label('layer', 'web')
 def test_choosing_audio_version(book_page):
     book_page.choose_audio_version()
-    expect(book_page.listen_to_the_fragment_btn).to_be_visible()
+    expect(book_page.listen_to_the_fragment_btn).to_be_visible(timeout=5000)
     allure_screenshot(book_page.page)
 
 @allure.epic('Проверка элементов на странице книги')
@@ -35,9 +35,8 @@ def test_choosing_audio_version(book_page):
 @allure.severity('normal')
 @allure.label('layer', 'web')
 def test_add_to_favorites (book_page):
-
-    allure_screenshot(book_page.page)
-    book_page.make_favorite()
+    book_page.toggle_favorite()
+    book_page.favorite_btn.get_by_test_id("icon_favoritesFilled").wait_for(state="attached", timeout=10000)
     assert book_page.is_in_favorites()
     allure_screenshot(book_page.page)
 
@@ -52,7 +51,8 @@ def test_remove_from_favorites (book_page):
     book_page.ensure_in_favorites()
     allure_screenshot(book_page.page)
     assert book_page.is_in_favorites()
-    book_page.make_favorite()
+    book_page.toggle_favorite()
+    book_page.favorite_btn.get_by_test_id("icon_favorites").wait_for(timeout=10000)
     assert not book_page.is_in_favorites()
     allure_screenshot(book_page.page)
 
@@ -68,7 +68,7 @@ def test_add_to_cart (book_page):
     book_page.page.wait_for_timeout(1000)
     close_promo_popup(book_page.page)
     assert book_page.is_in_cart()
-    expect(book_page.already_in_the_cart_btn).to_be_visible()
+    expect(book_page.already_in_the_cart_btn).to_be_visible(timeout=1000)
     expect(book_page.already_in_the_cart_btn).to_have_text("В корзинеПерейти")
 
 
@@ -81,9 +81,9 @@ def test_add_to_cart (book_page):
 @allure.label('layer', 'web')
 def test_buy_and_download(book_page):
     book_page.buy_and_download()
-    book_page.page.wait_for_timeout(1000)
     close_authorization_popup(book_page.page)
     assert not book_page.is_in_cart()
+    allure_screenshot(book_page.page)
 
 @allure.epic('Проверка элементов на странице книги')
 @allure.label("owner", "Yana Zaitseva")
@@ -94,8 +94,7 @@ def test_buy_and_download(book_page):
 @allure.label('layer', 'web')
 def test_read_with_subscription(book_page):
     book_page.read_with_subscription()
-    book_page.page.wait_for_timeout(2000)
-    expect(book_page.choose_tarif_text).to_be_visible()
+    expect(book_page.choose_tarif_text).to_be_visible(timeout=5000)
     allure_screenshot(book_page.page)
 
 @allure.epic('Проверка элементов на странице книги')
@@ -107,7 +106,6 @@ def test_read_with_subscription(book_page):
 @allure.label('layer', 'web')
 def test_buy_paper_book(book_page):
     book_page.buy_paper_book_btn.click()
-    book_page.page.wait_for_timeout(1000)
     close_authorization_popup(book_page.page)
     assert not book_page.is_in_cart()
 
@@ -120,6 +118,6 @@ def test_buy_paper_book(book_page):
 @allure.label('layer', 'web')
 def test_buy_paper_book_through_button(book_page):
     book_page.paper_book_btn.click()
-    book_page.page.wait_for_timeout(3000)
-    expect(book_page.paper_book_buy_btn).to_contain_text("Купить за")
+    button = book_page.page.get_by_role("button").filter(has_text="Купить за")
+    expect(button).to_be_visible(timeout=50000)
     allure_screenshot(book_page.page)

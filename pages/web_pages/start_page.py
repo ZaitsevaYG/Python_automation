@@ -18,14 +18,13 @@ class StartPage:
     def navigate(self):
         self.page.goto(main_link, wait_until='domcontentloaded', timeout=60000)
         expect(self.page.get_by_test_id("tab-login").get_by_role("paragraph")).to_contain_text("Войти")
-        self.page.wait_for_selector('input[data-testid="search__input"]', state='visible')
+        expect(self.search_field).to_be_visible(timeout=10000)
 
     @allure.step("Вводится имя автора в строку поиска и нажать кнопку поиска")
     def search_by_author(self, book):
         self.search_field.click()
         self.search_field.fill(book.author)
         self.search_btn.click()
-
         return self
 
     @allure.step("Вводится название книги в строку поиска и нажать кнопку поиска")
@@ -37,38 +36,22 @@ class StartPage:
 
     @allure.step("Проверка, что первая найденная книга соответствует критериям поиска")
     def book_with_specified_title_must_be_found (self, book):
-        try:
-            self.page.wait_for_selector('a[data-testid="art__title"]', state='visible')
-            first_title =self.search_result_title.first
-
-            expect(first_title).to_contain_text(book.title)
-
-        except Exception as e:
-            allure_screenshot(self.page)
-            raise e
+        expect(self.search_result_title.first).to_be_visible(timeout=10000)
+        expect(self.search_result_title.first).to_contain_text(book.title, timeout=10000)
+        allure_screenshot(self.page)
         return self
 
     @allure.step("Проверка, что первая найденная книга соответствует критериям поиска")
     def book_with_specified_author_must_be_found (self, book):
-        try:
-            self.page.wait_for_selector('a[data-testid="art__authorName--link"]', state='visible')
-            first_author = self.search_result_author.first
-            expect(first_author).to_contain_text(book.author)
-
-        except Exception as e:
-            allure_screenshot(self.page)
-            raise e
+        expect(self.search_result_author.first).to_be_visible(timeout=10000)
+        expect(self.search_result_author.first).to_contain_text(book.author, timeout=10000)
+        allure_screenshot(self.page)
         return self
 
     @allure.step("Проверка того, что по несуществующему названию появляется текст об отсутствии результатов поиска")
     def nothing_found_bad_request(self):
-        try:
-            allure_screenshot(self.page)
-            expect(self.search_result_nothing_found).to_contain_text("ничего не найдено")
-        except Exception as e:
-            allure_screenshot(self.page)
-            raise e
-
+        expect(self.search_result_nothing_found).to_contain_text("ничего не найдено", timeout=10000)
+        allure_screenshot(self.page)
         return self
 
 
