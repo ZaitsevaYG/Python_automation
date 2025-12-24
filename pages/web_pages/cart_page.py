@@ -11,17 +11,23 @@ class CartPage:
     def __init__(self, page: Page, book: Book):
         self.page = page
         self.book = book
+
+        # Кнопки на странице книги (для добавления)
         self.add_to_cart_btn = page.get_by_test_id("book__addToCartButton")
         self.already_in_the_cart_btn = page.get_by_test_id("book__goToCartButton")
+
+        # Элементы на странице корзины
         self.delete_btn = page.get_by_test_id("cart__listDeleteButton")
         self.delete_popup = page.get_by_test_id("cart__modalDeleteArt")
         self.delete_and_postpone_btn = page.get_by_role("button", name="Отложить и удалить")
-        self.empty_heart_icon = page.get_by_role("button", name="Отложить").get_by_test_id("icon_favorites")
-        self.filled_heart_icon = page.get_by_role("button", name="В отложенном").get_by_test_id("icon_favoritesFilled")
         self.delete_from_cart_popup_btn = page.get_by_test_id("cart__modalDeleteArt--button-primary")
         self.checkout_btn = page.get_by_role("button", name="Перейти к покупке")
         self.checkout_total = page.get_by_test_id("cart__checkout--total")
         self.empty_cart_state = page.get_by_test_id("cart__emptyState--wrapper")
+
+        # Иконки избранного (на странице корзины)
+        self.empty_heart_icon = page.get_by_role("button", name="Отложить").get_by_test_id("icon_favorites")
+        self.filled_heart_icon = page.get_by_role("button", name="В отложенном").get_by_test_id("icon_favoritesFilled")
 
 
     def get_book_locator(self):
@@ -35,8 +41,7 @@ class CartPage:
         expect(self.page.get_by_test_id("tab-login").get_by_role("paragraph")).to_contain_text("Войти")
         book_title = self.page.get_by_role("heading", name=self.book.title)
         book_title.wait_for(state="visible")
-        self.add_to_cart_btn.click()
-        self.page.wait_for_timeout(1000)
+        self.add_to_cart_btn.click(timeout=2000)
         close_promo_popup(self.page)
         self.already_in_the_cart_btn.click()
         allure_screenshot(self.page)
@@ -51,9 +56,8 @@ class CartPage:
 
     @allure.step("Книга не в отложенном. Удаление книги -> в поп апе нажимается 'Удалить и отложить'")
     def delete_from_cart_and_postpone (self):
-        expect(self.empty_heart_icon).to_be_visible()
+        expect(self.empty_heart_icon).to_be_visible(timeout=2000)
         allure_screenshot(self.page)
-        self.page.wait_for_timeout(1000)
         self.delete_btn.click()
         expect(self.delete_popup).to_be_visible()
         allure_screenshot(self.page)
@@ -62,9 +66,8 @@ class CartPage:
 
     @allure.step("Книга не в отложенном. Удаление книги без добавления в отложенное")
     def delete_from_cart (self):
-        expect(self.empty_heart_icon).to_be_visible()
+        expect(self.empty_heart_icon).to_be_visible(timeout=2000)
         allure_screenshot(self.page)
-        self.page.wait_for_timeout(1000)
         self.delete_btn.click()
         expect(self.delete_popup).to_be_visible()
         allure_screenshot(self.page)
@@ -73,7 +76,7 @@ class CartPage:
 
     @allure.step("Нажать на  кнопку 'Перейти к покупке'")
     def buy_book(self):
-        self.page.wait_for_timeout(3000)
+        expect(self.checkout_btn).to_be_visible(timeout=2000)
         expect(self.checkout_total).to_have_text(re.compile(r".+"))
         self.checkout_btn.click()
 
@@ -82,8 +85,7 @@ class CartPage:
         book_in_cart = self.get_book_locator()
         book_in_cart.get_by_role("button", name="Отложить").click()
         allure_screenshot(self.page)
-        self.page.wait_for_timeout(1000)
-        self.delete_btn.click(timeout=1000)
+        self.delete_btn.click(timeout=2000)
         expect(self.delete_popup).to_be_visible()
         allure_screenshot(self.page)
         self.delete_from_cart_popup_btn.click()

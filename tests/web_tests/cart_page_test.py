@@ -21,11 +21,10 @@ def test_add_book_to_postponed_and_delete(cart_page):
 @allure.severity('normal')
 @allure.label('layer', 'web')
 def test_delete_and_postpone(cart_page):
-    expect(cart_page.empty_heart_icon).to_be_visible()
+    expect(cart_page.empty_heart_icon).to_be_visible(timeout=3000)
     cart_page.delete_btn.click()
-    cart_page.delete_and_postpone_btn.click()
-    expect(cart_page.filled_heart_icon).to_be_visible()
-    cart_page.page.wait_for_timeout(1000)
+    cart_page.delete_and_postpone_btn.click(timeout=3000)
+    expect(cart_page.filled_heart_icon).to_be_visible(timeout=3000)
     cart_page.cart_is_empty()
 
 @allure.epic('Взаимодействие с книгой на странице Корзины')
@@ -38,8 +37,7 @@ def test_delete_and_postpone(cart_page):
 def test_delete_from_cart(cart_page):
     cart_page.delete_btn.click()
     expect(cart_page.filled_heart_icon).not_to_be_visible()
-    cart_page.delete_from_cart_popup_btn.click()
-    cart_page.page.wait_for_timeout(5000)
+    cart_page.delete_from_cart_popup_btn.click(timeout=3000)
     cart_page.cart_is_empty()
 
 @allure.epic('Взаимодействие с книгой на странице Корзины')
@@ -51,5 +49,4 @@ def test_delete_from_cart(cart_page):
 @allure.label('layer', 'web')
 def test_checkout_without_authorization(cart_page):
     cart_page.buy_book()
-    cart_page.page.wait_for_timeout(1000)
     close_authorization_popup(cart_page.page)

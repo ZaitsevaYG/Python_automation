@@ -50,31 +50,27 @@ class MyBooksPage:
     @allure.step("Проверка возможности авторизоваться из окна 'Мои книги'")
     def my_books_auth(self):
         expect(self.page.get_by_test_id("myBooks__readAndListen--section").get_by_text("Здесь будет появляться все, что вы читаете и слушаете")).to_be_visible()
-        self.authorization_from_my_books.click()
-        self.page.wait_for_timeout(5000)
+        self.authorization_from_my_books.click(timeout=5000)
         allure_screenshot(self.page)
 
 
     @allure.step("Проверка отображения вкладки 'Мои'")
     def my_books_tab(self):
-        self.my.click()
-        self.page.wait_for_timeout(1000)
+        self.my.click(timeout=5000)
         expect(self.my_wrapper).to_have_attribute("aria-selected","true")
         allure_screenshot(self.page)
         expect(self.my_empty_inner_text).to_be_visible()
 
     @allure.step("Проверка отображения вкладки 'Отложено'")
     def postponed_books_tab(self):
-        self.postponed.click()
-        self.page.wait_for_timeout(1000)
+        self.postponed.click(timeout=5000)
         expect(self.postponed_wrapper).to_have_attribute("aria-selected","true")
         allure_screenshot(self.page)
         expect(self.postponed_empty_inner_text).to_be_visible()
 
     @allure.step("Проверка отображения вкладки 'Облако'")
     def cloud_tab(self):
-        self.cloud.click()
-        self.page.wait_for_timeout(1000)
+        self.cloud.click(timeout=5000)
         expect(self.cloud_wrapper).to_have_attribute("aria-selected", "true")
         allure_screenshot(self.page)
         expect(self.cloud_upload_from_pc).to_be_visible()
@@ -82,27 +78,23 @@ class MyBooksPage:
 
     @allure.step("Проверка отображения вкладки 'Облако' - 'Узнать больше'")
     def cloud_learn_more(self):
-        self.cloud.click()
-        self.page.wait_for_timeout(1000)
+        self.cloud.click(timeout=5000)
         expect(self.cloud_wrapper).to_have_attribute("aria-selected", "true")
-        self.cloud_learn_more.click()
-        self.page.wait_for_timeout(1000)
+        self.cloud_learn_more.click(timeout=5000)
         allure_screenshot(self.page)
         expect(self.page.get_by_test_id("modal--content")).to_contain_text("Загрузка книг в облако")
         self.page.get_by_test_id("modal--close-button").click()
 
     @allure.step("Проверка отображения вкладки 'Списки'")
     def lists_tab(self):
-        self.lists.click()
-        self.page.wait_for_timeout(1000)
+        self.lists.click(timeout=5000)
         expect(self.lists_wrapper).to_have_attribute("aria-selected", "true")
         allure_screenshot(self.page)
         expect(self.lists_empty_inner_text).to_be_visible()
 
     @allure.step("Проверка отображения вкладки 'Я слежу'")
     def i_follow_tab(self):
-        self.i_follow.click()
-        self.page.wait_for_timeout(1000)
+        self.i_follow.click(timeout=5000)
         expect(self.i_follow_wrapper).to_have_attribute("aria-selected", "true")
         allure_screenshot(self.page)
         expect(self.i_follow_search).to_be_visible()
@@ -110,24 +102,21 @@ class MyBooksPage:
 
     @allure.step("Проверка отображения вкладки 'Архив'")
     def archive_tab(self):
-        self.archive.click()
-        self.page.wait_for_timeout(1000)
+        self.archive.click(timeout=5000)
         expect(self.archive_wrapper).to_have_attribute("aria-selected", "true")
         allure_screenshot(self.page)
         expect(self.archive_empty_inner_text).to_be_visible()
 
     @allure.step("Проверка кнопки 'Загрузить книги'")
     def upload_books(self):
-        self.upload_books_btn.click()
-        self.page.wait_for_timeout(1000)
+        self.upload_books_btn.click(timeout=5000)
         allure_screenshot(self.page)
         expect(self.cloud_wrapper).to_have_attribute("aria-selected", "true")
         expect(self.cloud_upload_from_pc).to_be_visible()
 
     @allure.step("Проверка возможности добавить книгу в отложенное без авторизации. Проверка элементов на странице.")
     def one_postponed_book(self, book):
-        self.postponed.click()
-        self.page.wait_for_timeout(1000)
+        self.postponed.click(timeout=5000)
         expect(self.postponed_wrapper).to_have_attribute("aria-selected", "true")
         allure_screenshot(self.page)
         expect(self.page.get_by_test_id("navigation__tabItem__counter")).to_contain_text("1")
