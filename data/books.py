@@ -5,10 +5,10 @@ main_link = 'https://www.litres.ru/'
 
 @dataclasses.dataclass
 class Book:
-    title: str
-    author: str
-    price: str
-    url: str
+    title: Optional[str] = None
+    author: Optional[str] = None
+    price: Optional[str] = None
+    url: Optional[str] = None
     id: Optional[str] = None
     slug: Optional[str] = None
 
@@ -33,4 +33,13 @@ FLOWERS = Book(
     url='',
     id="145410",
     slug="deniel-kiz/cvety-dlya-eldzhernona"
+)
+
+NIGHT_CLERK = Book(
+    title="Ночной портье",
+    author='Ирвин Шоу',
+    price='',
+    url='',
+    id='',
+    slug=''
 )

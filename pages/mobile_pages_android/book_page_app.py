@@ -1,0 +1,35 @@
+from selene import browser, have, be
+from appium.webdriver.common.appiumby import AppiumBy
+from data.books import Book
+
+
+class AndroidBookPage:
+    book = Book()
+
+    def adding_book_to_saved(self):
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/imageViewBookCardFavourite")).click()
+        return self
+
+    def go_to_saved_tab(self):
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/nav_my_audiobooks")).click()
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewBookSectionTitle")).click()
+        return self
+
+    def book_must_be_added_to_saved(self, book):
+        (browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewBookName"))
+         .should(have.text(book.title)))
+        return self
+
+    def removing_book_from_saved(self):
+        #browser.element((AppiumBy.ID, "ru.litres.android.international:id/bookName")).click()
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/imageViewBookCardFavourite")).click()
+        return self
+
+    def book_must_be_removed_from_saved(self):
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/nav_my_audiobooks")).click()
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewBookSectionTitle")).click()
+        (browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewDescriptionEmptySection"))
+         .should(have.text("Здесь будет все, что вы отложите\nна потом")))
+        return self
+
+book_page = AndroidBookPage()
