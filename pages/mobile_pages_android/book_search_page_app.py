@@ -10,7 +10,7 @@ class AndroidSearchBookPage:
     def searching_book(self, book):
         browser.element((AppiumBy.ID, "ru.litres.android.international:id/search")).click()
         browser.element((AppiumBy.ID, "ru.litres.android.international:id/et_search_query")).type(book.title)
-        browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewItemSearchSuggestText")).click()
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewItemSearchSuggestText")).with_(timeout=30).click()
         return self
 
     def book_must_be_found(self, book):

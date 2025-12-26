@@ -1,17 +1,24 @@
-[project]
-name = "python-auto-litres"
+[tool.poetry]
+name = "Python_automation_litres"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "Yana Zaitseva",email = "zaitsevayg@gmail.com"}
-]
+authors = ["Zaitseva Yana <zaitseva.yg@gmail.com>"]
 readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "selene (>=1.0.2,<2.0.0)"
-]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^8.4.2"
+jsonschema = "^4.25.1"
+requests = "^2.31.0"
+python-dotenv = "^1.2.1"
+selene = "^2.0.0rc9"
+allure-pytest = "^2.15.2"
+appium-python-client = "3.1.1"
+playwright = "^1.56.0"
+selenium ="^4.39.0"
+Appium-Python-Client="^5.2.4"
 
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

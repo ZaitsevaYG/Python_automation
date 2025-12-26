@@ -17,10 +17,10 @@ def test_change_color_theme(android_mobile_management):
 
 @allure.epic('Настройки аккаунта')
 @allure.label("owner", "Zaitseva Yana")
-@allure.feature("Проверка включения контента 18+")
+@allure.feature("Проверка смены языка в приложении")
 @allure.severity('normal')
 @allure.label('layer', 'mobile')
 
-def test_turn_adult_content(android_mobile_management):
-    account_page.change_adult_content()
-    account_page.check_adult_content_on()
+def test_change_language(android_mobile_management):
+    account_page.change_language()
+    account_page.check_language_change()

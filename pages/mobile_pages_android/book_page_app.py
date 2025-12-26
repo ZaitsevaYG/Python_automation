@@ -12,7 +12,7 @@ class AndroidBookPage:
 
     def go_to_saved_tab(self):
         browser.element((AppiumBy.ID, "ru.litres.android.international:id/nav_my_audiobooks")).click()
-        browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewBookSectionTitle")).click()
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewBookSectionTitle")).with_(timeout=30).click()
         return self
 
     def book_must_be_added_to_saved(self, book):
@@ -21,12 +21,12 @@ class AndroidBookPage:
         return self
 
     def removing_book_from_saved(self):
-        #browser.element((AppiumBy.ID, "ru.litres.android.international:id/bookName")).click()
-        browser.element((AppiumBy.ID, "ru.litres.android.international:id/imageViewBookCardFavourite")).click()
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewBookName")).click()
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/imageViewBookCardFavourite")).with_(timeout=30).click()
         return self
 
     def book_must_be_removed_from_saved(self):
-        browser.element((AppiumBy.ID, "ru.litres.android.international:id/nav_my_audiobooks")).click()
+        browser.element((AppiumBy.ID, "ru.litres.android.international:id/nav_my_audiobooks")).with_(timeout=30).click()
         browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewBookSectionTitle")).click()
         (browser.element((AppiumBy.ID, "ru.litres.android.international:id/textViewDescriptionEmptySection"))
          .should(have.text("Здесь будет все, что вы отложите\nна потом")))

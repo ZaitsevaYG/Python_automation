@@ -17,21 +17,23 @@ class AndroidAccountPage:
         browser.element((AppiumBy.XPATH,'//android.widget.TextView[@resource-id="ru.litres.android.international:id/spinner_value" and @text="Включена"]')).should(have.text("Включена"))
         return self
 
-    def change_adult_content(self):
+    def change_language(self):
         browser.element((AppiumBy.XPATH,
                          "(//android.widget.LinearLayout[@resource-id='ru.litres.android.international:id/navigation_bar_item_content_container'])[5]")).click()
-        browser.element((AppiumBy.ANDROID_UIAUTOMATOR,
-                         'new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text("Ограничение взрослого контента"))')).click()
+
         browser.element((AppiumBy.XPATH,
-                       "//android.widget.CheckedTextView[@resource-id=\'android:id/text1' and @text='Выключено']")).click()
+                         "//android.widget.TextView[@resource-id='ru.litres.android.international:id/spinner_name' and @text='Язык интерфейса']")).click()
+        browser.element((AppiumBy.XPATH,
+                       "//android.widget.CheckedTextView[@resource-id='android:id/text1' and @text='English']")).click()
         browser.element((AppiumBy.CLASS_NAME, "android.widget.Button")).click()
 
         return self
 
-    def check_adult_content_on(self):
+    def check_language_change(self):
         browser.element((AppiumBy.XPATH,
-                         '//android.widget.TextView[@resource-id="ru.litres.android.international:id/spinner_value" and @text="Выключено"]')).should(
-            have.text("Выключено"))
+                         '//android.widget.TextView[@resource-id="ru.litres.android.international:id/spinner_value" and @text="English"]')).should(
+            have.text("English"))
+        browser.element((AppiumBy.ID,"ru.litres.android.international:id/tv_config")).should(have.text("Settings"))
         return self
 
 account_page = AndroidAccountPage()
