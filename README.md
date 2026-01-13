@@ -63,3 +63,9 @@ pytest tests
 
 Мобильное тестирование в данном проекте реализовано на реальном девайсе на платформе Android.  
 Для прогона локально тестов необходимо скачать и положить в папку data  <a href="https://drive.google.com/uc?export=download&id=1qAgPymonfSuqqg6CyYDRi-62NJxYD-Uh">apk файл</a>.
+
+#### Пример отчета о прохождении mobile-теста
+![This is an image](data/rm_design/allure_mobile.png)
+
+### Пример видео прохождения mobile-автотестob
+![autotest_gif](data/rm_design/mobile-tests-video.mp4)
