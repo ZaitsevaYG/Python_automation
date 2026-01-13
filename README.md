@@ -67,5 +67,5 @@ pytest tests
 #### Пример отчета о прохождении mobile-теста
 ![This is an image](data/rm_design/allure_mobile.png)
 
-### Пример видео прохождения mobile-автотестob
-![autotest_gif](data/rm_design/mobile-tests-video.mp4)
+### Пример видео прохождения mobile-автотестoв
+![autotest_gif](data/rm_design/mobile-tests-video.gif)
