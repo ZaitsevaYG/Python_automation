@@ -2,7 +2,7 @@
 
 > <a target="_blank" href="https://www.litres.ru">Ссылка на сайт</a>
 
-![This is an image](data/rm_design/litres_page.png)
+![This is an image](data/rm_design/Litres_page.png)
 
 <h3> Список проверок, реализованных в автотестах:</h3>
 
