@@ -7,6 +7,6 @@ def load_schema(filename: str):
     schema_path = os.path.join(project_root, 'schema', filename)
 
 
-    with open(schema_path, encoding='utf-8') as file:  # Указываем кодировку
+    with open(schema_path, encoding='utf-8') as file:
         schema = json.load(file)
         return schema
